@@ -3,11 +3,15 @@ const router = express.Router();
 const posts = require('../data/store');
 
 // POST /posts/:id/like
-router.post('/:id/like', (req, res) => {
+router.post('/posts/:id/like', (req, res) => {
   const post = posts.find(p => p.id === req.params.id);
-  if (!post) return res.status(404).json({ error: "Post not found" });
+  if (!post) {
+    console.log('Like failed - Post not found for ID:', req.params.id);
+    return res.status(404).json({ error: 'Post not found' });
+  }
 
   post.likes += 1;
+  console.log('Post liked - New like count:', post.likes);
   res.json({ likes: post.likes });
 });
 
